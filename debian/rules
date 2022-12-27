@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+PKG=$(shell dh_listpackages)
+
+%:
+	dh $@
+
+override_dh_installexamples:
+	dh_installexamples
+	find $(CURDIR)/debian/$(PKG)/usr/share/doc/$(PKG)/examples -type f \
+		-exec sed -i -e 's;^#.*perl;#!/usr/bin/perl;' {} +
+	
